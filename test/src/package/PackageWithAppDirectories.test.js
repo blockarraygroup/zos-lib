@@ -63,5 +63,11 @@ contract('PackageWithAppDirectories', function ([_, owner]) {
       const implementation = await this.package.getImplementation(version, contractName)
       implementation.should.eq(newImplementation.address)
     })
+
+    it('should allow unset the implementation', async function () {
+      await this.package.unsetImplementation(version, contractName)
+      const implementation = await this.package.getImplementation(version, contractName)
+      implementation.should.be.zeroAddress
+    })
   })
 })

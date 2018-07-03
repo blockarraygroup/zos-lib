@@ -45,6 +45,15 @@ contract('FreezableImplementationDirectory', ([_, owner]) => {
       const currentImplementation = await this.directory.getImplementation('DummyImplementation');
       currentImplementation.should.be.eq(implementation.address)
     })
+
+    it('can unset a implementation', async function () {
+      const implementation = await DummyImplementation.new()
+      await this.directory.setImplementation('DummyImplementation', implementation.address)
+
+      await this.directory.unsetImplementation('DummyImplementation')
+      const implementationAddress = await this.package.getImplementation('DummyImplementation')
+      implementationAddress.should.be.zeroAddress
+    })
   })
 
   describe('deployDependency', function () {
@@ -82,6 +91,15 @@ contract('FreezableImplementationDirectory', ([_, owner]) => {
 
       const currentImplementation = await this.directory.getImplementation('DummyImplementation')
       currentImplementation.should.be.eq(implementation.address)
+    })
+
+    it('can unset a implementation', async function () {
+      const implementation = await DummyImplementation.new()
+      await this.directory.setImplementation('DummyImplementation', implementation.address)
+
+      await this.directory.unsetImplementation('DummyImplementation')
+      const implementationAddress = await this.package.getImplementation('DummyImplementation')
+      implementationAddress.should.be.zeroAddress
     })
   })
 })

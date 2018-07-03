@@ -73,6 +73,12 @@ contract('PackageWithFreezableDirectories', function ([_, owner]) {
         const implementation = await this.package.getImplementation(version, contractName)
         implementation.should.eq(newImplementation.address)
       })
+
+      it('should allow unset the implementation', async function () {
+        await this.package.unsetImplementation(version, contractName)
+        const implementation = await this.package.getImplementation(version, contractName)
+        implementation.should.be.zeroAddress
+      })
     })
 
     describe('when current version is frozen', async function() {
@@ -82,6 +88,10 @@ contract('PackageWithFreezableDirectories', function ([_, owner]) {
 
       it('does not allow to register new implementations', async function() {
         await assertRevert(this.package.setImplementation(version, DummyImplementation, contractName))
+      })
+
+      it('does not allow to unset the implementation', async function () {
+        await assertRevert(this.package.unsetImplementation(version, contractName))
       })
     })
   })
